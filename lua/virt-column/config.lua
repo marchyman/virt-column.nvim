@@ -61,30 +61,21 @@ local validate_config = function(config)
         return
     end
 
-    vim.validate {
-        enabled = { config.enabled, "boolean", true },
-        char = { config.char, { "string", "table" }, true },
-        virtcolumn = { config.virtcolumn, "string", true },
-        highlight = { config.highlight, { "string", "table" }, true },
-        exclude = { config.exclude, "table", true },
-    }
+    vim.validate("enabled", config.enabled, "boolean", true)
+    vim.validate("char", config.char, { "string", "table" }, true)
+    vim.validate("virtcolumn", config.virtcolumn, "string", true)
+    vim.validate("highlight", config.highlight, { "string", "table" }, true)
+    vim.validate("exclude", config.exclude, "table", true)
 
     if config.char then
-        vim.validate {
-            char = {
-                config.char,
-                validate_char,
-                "char to have a display width of 0 or 1",
-            },
-        }
+        vim.validate("char", config.char, validate_char,
+                     "char to have a display width of 0 or 1")
     end
 
     if config.exclude then
         if config.exclude then
-            vim.validate {
-                filetypes = { config.exclude.filetypes, "table", true },
-                buftypes = { config.exclude.buftypes, "table", true },
-            }
+            vim.validate("filetypes", config.exclude.filetypes, "table", true)
+            vim.validate("buftypes", config.exclude.buftypes, "table", true)
         end
     end
 end
